@@ -6,15 +6,17 @@
     "dev": "tsx watch src/index.ts",
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && npm run sentry:sourcemaps",
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org colognifornia --project consent_colognifornia_com ./dist && sentry-cli sourcemaps upload --org colognifornia --project consent_colognifornia_com ./dist"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "@hono/sentry": "^1.2.0",
     "@hono/zod-validator": "^0.4.2",
     "@redis/client": "^1.6.0",
+    "@sentry/cli": "^2.40.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
     "hono": "^4.6.16",
