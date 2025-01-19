@@ -36,13 +36,12 @@ app.use(
   rateLimiter({
     windowMs: 60 * 1000, // 1 minute
     limit: 6,
-    keyGenerator: (c) =>
-      crypto
-        .createHash('sha256')
-        .update(
-          (c.env as HttpBindings).incoming.socket.remoteAddress ?? 'unknown'
-        )
-        .digest('hex'),
+    keyGenerator: (c) => {
+      const ip = (c.env as HttpBindings).incoming.socket.remoteAddress;
+      return ip
+        ? crypto.createHash('sha256').update(ip).digest('hex')
+        : 'unknown';
+    },
     // @ts-expect-error incompatible types for RedisStore
     store: redis.isReady
       ? new RedisStore({

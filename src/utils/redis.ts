@@ -1,10 +1,16 @@
 import env from '@/env';
 import { createClient } from '@redis/client';
+import pino from './pino';
 
 const client = createClient({
   url: env.REDIS_URL,
 });
 
-await client.connect();
+try {
+  await client.connect();
+} catch (e) {
+  pino.error('Failed to connect to Redis');
+  pino.error(e);
+}
 
 export default client;
