@@ -1,8 +1,2 @@
-```
-npm install
-npm run dev
-```
-
-```
-open http://localhost:3000
-```
+# consent.colognifornia.com
+The source code of consent.colognifornia.com.
