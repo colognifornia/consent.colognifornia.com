@@ -1,5 +1,4 @@
 import { config as dotenv } from 'dotenv';
-import { SEE_OTHER } from 'stoker/http-status-codes';
 import { z } from 'zod';
 
 dotenv();

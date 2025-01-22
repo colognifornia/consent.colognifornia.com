@@ -10,7 +10,6 @@ import { rateLimiter } from 'hono-rate-limiter';
 import RedisStore from 'rate-limit-redis';
 import redis from '@/utils/redis';
 import crypto from 'node:crypto';
-import { sentry } from '@hono/sentry';
 import { bearerAuth } from 'hono/bearer-auth';
 import { HTTPException } from 'hono/http-exception';
 
@@ -25,11 +24,6 @@ const origin =
 
 const app = createApp();
 
-app.use(
-  sentry({
-    dsn: env.SENTRY_DSN,
-  })
-);
 app.use(pinoLogger);
 app.use(secureHeaders());
 app.use(
