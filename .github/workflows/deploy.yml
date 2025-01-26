@@ -1,0 +1,57 @@
+name: 'Deploy to Cloud Run'
+
+on:
+  push:
+    branches:
+      - main
+      - feat/cd-pipeline
+
+env:
+  PROJECT_ID: 'consent-colognifornia-com'
+  SERVICE: 'consent-colognifornia-com'
+  REGION: 'europe-west3'
+  SENTRY_ORG: 'colognifornia'
+  SENTRY_PROJECT: 'consent_colognifornia_com'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 'Build'
+        run: |
+          npm ci
+          npm run build
+
+      - name: 'Create Sentry release and generate sourcemaps'
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
+        with:
+          environment: production
+          inject: true
+          sourcemaps: './dist'
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+
+      - name: 'Deploy to Cloud Run'
+        uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+          service: '${{ env.SERVICE }}'
+          region: '${{ env.REGION }}'
+          source: './'
