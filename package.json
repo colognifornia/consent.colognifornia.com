@@ -6,7 +6,7 @@
     "dev": "tsx watch src/index.ts",
     "start": "node --import ./dist/src/sentry/instrument.js dist/src/index.js",
     "typecheck": "tsc --noEmit",
-    "build": "tsc && tsc-alias && npm run sentry:sourcemaps",
+    "build": "tsc && tsc-alias",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject ./dist && sentry-cli sourcemaps upload ./dist"
