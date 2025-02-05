@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat/cd-pipeline
 
 env:
   PROJECT_ID: 'consent-colognifornia-com'
