@@ -1,14 +1,13 @@
-import { sql } from 'drizzle-orm';
 import {
-  datetime,
+  timestamp,
   index,
   json,
-  mysqlTable,
+  pgTable,
   serial,
   varchar,
-} from 'drizzle-orm/mysql-core';
+} from 'drizzle-orm/pg-core';
 
-export const consentsTable = mysqlTable(
+export const consentsTable = pgTable(
   'consents',
   {
     id: serial().primaryKey(),
@@ -18,14 +17,12 @@ export const consentsTable = mysqlTable(
     user_id: varchar({ length: 255 }).notNull(),
     user_agent: varchar({ length: 255 }).notNull(),
     user_ip: varchar({ length: 45 }).notNull(),
-    consent_logged_at: datetime()
-      .default(sql`now()`)
-      .notNull(),
+    consent_logged_at: timestamp().defaultNow().notNull(),
   },
   (table) => {
-    return {
-      user_id_idx: index('user_id_idx').on(table.user_id),
-      domain_idx: index('domain_idx').on(table.domain),
-    };
+    return [
+      index('user_id_idx').on(table.user_id),
+      index('domain_idx').on(table.domain),
+    ];
   }
 );

@@ -11,6 +11,7 @@ import {
 } from 'stoker/http-status-codes';
 import { z } from 'zod';
 import { isV4Format, mask as maskIP } from 'neoip';
+import { NeonHttpQueryResult } from 'drizzle-orm/neon-http';
 
 const app = createApp();
 
@@ -80,8 +81,10 @@ app.post(
 
     // insert consent into db
     try {
-      const [res] = await db.insert(consentsTable).values(consent);
-      if (res.affectedRows !== 1) {
+      const res: NeonHttpQueryResult<InsertConsent> = await db
+        .insert(consentsTable)
+        .values(consent);
+      if (res.rowCount !== 1) {
         throw new Error('DB insert failed, no affected rows.');
       }
     } catch (e) {

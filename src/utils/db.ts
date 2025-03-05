@@ -1,10 +1,9 @@
 import db from '@/db';
 import pino from './pino';
-import { consentsTable } from '@/db/schema';
 
 export async function checkDBConnection() {
   try {
-    await db.select().from(consentsTable);
+    await db.execute('select 1');
     pino.info('Connected to the database');
     return true;
   } catch (error) {
