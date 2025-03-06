@@ -46,6 +46,11 @@ app.post(
       c.req.header('Origin') !== 'https://' + body.domain ||
       !c.req.header('Referer')?.startsWith('https://' + body.domain)
     ) {
+      pino.warn(
+        `Invalid domain: ${c.req.header('Origin')} (origin), ${c.req.header(
+          'Referer'
+        )} (referer)`
+      );
       return c.json({ error: 'Invalid domain.', success: false }, BAD_REQUEST);
     }
 
@@ -102,7 +107,7 @@ app.post(
       secure: true,
       sameSite: 'None',
       path: '/',
-      domain: '26bb-2001-9e8-d0aa-e00-8539-63e7-e6f3-3587.ngrok-free.app',
+      domain: '.' + new URL(c.req.url).hostname,
       partitioned: true,
     });
 
