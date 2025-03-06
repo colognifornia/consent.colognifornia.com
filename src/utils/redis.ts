@@ -8,6 +8,7 @@ const client = createClient({
 
 try {
   await client.connect();
+  pino.info('Connected to Redis');
 } catch (e) {
   pino.error('Failed to connect to Redis');
   pino.error(e);
