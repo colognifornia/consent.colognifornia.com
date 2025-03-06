@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: 'consent-colognifornia-com'
   SERVICE: 'consent-colognifornia-com'
-  REGION: 'europe-west3'
+  REGION: 'europe-west4'
   SENTRY_ORG: 'colognifornia'
   SENTRY_PROJECT: 'consent_colognifornia_com'
 
