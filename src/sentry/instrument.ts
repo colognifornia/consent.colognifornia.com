@@ -10,6 +10,9 @@ Sentry.init({
     nodeProfilingIntegration(),
   ],
 
+  // sampling rate for all errors
+  sampleRate: 1.0,
+
   // Add Tracing by setting tracesSampleRate
   tracesSampleRate: 1.0,
 

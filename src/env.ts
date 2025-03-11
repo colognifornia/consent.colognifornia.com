@@ -1,5 +1,6 @@
 import { config as dotenv } from 'dotenv';
 import { z } from 'zod';
+import * as Sentry from '@sentry/node';
 
 dotenv();
 
@@ -28,6 +29,7 @@ const { data: env, error } = EnvSchema.safeParse(process.env);
 if (error) {
   console.error('❌ Invalid env:');
   console.error(JSON.stringify(error.flatten().fieldErrors, null, 2));
+  await Sentry.close(2000);
   process.exit(1);
 }
 

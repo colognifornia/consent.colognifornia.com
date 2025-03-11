@@ -54,7 +54,7 @@ app.post(
       return c.json({ error: 'Invalid domain.', success: false }, BAD_REQUEST);
     }
 
-    // get user_id from cookie if present
+    // get user_id from cookie or request body
     let user_id = getCookie(c, 'consent_user_id') ?? body.user_id;
     const parsedUserId = z.string().uuid().safeParse(user_id);
     if (!parsedUserId.success) {
