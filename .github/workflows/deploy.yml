@@ -55,3 +55,5 @@ jobs:
           service: '${{ env.SERVICE }}'
           region: '${{ env.REGION }}'
           source: './'
+          env_vars: |
+            RELEASE_VERSION=${{ github.sha }}

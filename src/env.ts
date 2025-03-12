@@ -20,6 +20,7 @@ const EnvSchema = z.object({
   REDIS_URL: z.string(),
   API_KEY: z.string(),
   SENTRY_DSN: z.string(),
+  RELEASE_VERSION: z.string().optional(),
 });
 
 export type env = z.infer<typeof EnvSchema>;
