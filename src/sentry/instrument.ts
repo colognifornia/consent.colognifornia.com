@@ -1,7 +1,7 @@
 import env from '@/env';
 import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
-import * as packageJson from '@/../package.json' with { type: 'json' };
+import packageJson from '@/../package.json' with { type: 'json' };
 
 Sentry.init({
   dsn: env.SENTRY_DSN,
