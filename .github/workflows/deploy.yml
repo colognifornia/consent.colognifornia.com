@@ -41,6 +41,7 @@ jobs:
           environment: production
           inject: true
           sourcemaps: './dist'
+          version: 'consent.colognifornia.com@${{ github.sha }}'
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
