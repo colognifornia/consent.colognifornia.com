@@ -17,9 +17,7 @@ Sentry.init({
   // Set sampling rate for profiling
   profilesSampleRate: 1.0,
 
-  registerEsmLoaderHooks: {
-    onlyIncludeInstrumentedModules: true,
-  },
+  registerEsmLoaderHooks: true,
 
   environment: env.NODE_ENV,
   release: env.RELEASE_VERSION
