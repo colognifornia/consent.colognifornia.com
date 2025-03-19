@@ -20,7 +20,7 @@ const EnvSchema = z.object({
   REDIS_URL: z.string(),
   API_KEY: z.string(),
   SENTRY_DSN: z.string(),
-  RELEASE_VERSION: z.string().optional(),
+  RELEASE_VERSION: z.string().default(process.env.RENDER_GIT_COMMIT ?? ''),
 });
 
 export type env = z.infer<typeof EnvSchema>;
