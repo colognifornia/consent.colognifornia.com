@@ -1,6 +1,7 @@
 import { createApp } from '@/app';
 import db from '@/db';
 import { consentsTable } from '@/db/schema';
+import env from '@/env';
 import pino from '@/utils/pino';
 import { zValidator } from '@hono/zod-validator';
 import { getCookie, setCookie } from 'hono/cookie';
@@ -65,7 +66,7 @@ app.post(
     }
 
     // validate user IP
-    let user_ip = c.env.incoming.socket.remoteAddress;
+    let user_ip = env.NODE_ENV === 'production' ? c.req.header('x-forwarded-for')?.split(',')[0].trim() || c.req.header('cf-connecting-ip') || c.req.header('true-client-ip') : c.env.incoming.socket.remoteAddress;
     const parsedIP = z.string().ip().safeParse(user_ip);
     if (!parsedIP.success) {
       pino.warn('Invalid user IP address: ', user_ip);
