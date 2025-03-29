@@ -58,7 +58,7 @@ app.post(
     // get user_id from cookie or request body
     let user_id = getCookie(c, 'consent_user_id') ?? body.user_id;
     const parsedUserId = z.string().uuid().safeParse(user_id);
-    if (!parsedUserId.success) {
+    if (user_id !== undefined && !parsedUserId.success) {
       pino.warn('Invalid consent_user_id cookie: ', user_id);
       user_id = undefined;
     } else {
@@ -66,7 +66,12 @@ app.post(
     }
 
     // validate user IP
-    let user_ip = env.NODE_ENV === 'production' ? c.req.header('x-forwarded-for')?.split(',')[0].trim() || c.req.header('cf-connecting-ip') || c.req.header('true-client-ip') : c.env.incoming.socket.remoteAddress;
+    let user_ip =
+      env.NODE_ENV === 'production'
+        ? c.req.header('x-forwarded-for')?.split(',')[0].trim() ||
+          c.req.header('cf-connecting-ip') ||
+          c.req.header('true-client-ip')
+        : c.env.incoming.socket.remoteAddress;
     const parsedIP = z.string().ip().safeParse(user_ip);
     if (!parsedIP.success) {
       pino.warn('Invalid user IP address: ', user_ip);
