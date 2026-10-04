@@ -59,7 +59,7 @@ app.post(
     let user_id = getCookie(c, 'consent_user_id') ?? body.user_id;
     const parsedUserId = z.string().uuid().safeParse(user_id);
     if (user_id !== undefined && !parsedUserId.success) {
-      pino.warn('Invalid consent_user_id cookie: ', user_id);
+      pino.warn('Invalid consent_user_id cookie: ' + user_id);
       user_id = undefined;
     } else {
       user_id = parsedUserId.data;
@@ -72,9 +72,11 @@ app.post(
           c.req.header('cf-connecting-ip') ||
           c.req.header('true-client-ip')
         : c.env.incoming.socket.remoteAddress;
-    const parsedIP = z.string().ip().safeParse(user_ip);
+    const parsedIP = isV4Format(user_ip ?? 'unknown')
+      ? z.ipv4().safeParse(user_ip)
+      : z.ipv6().safeParse(user_ip);
     if (!parsedIP.success) {
-      pino.warn('Invalid user IP address: ', user_ip);
+      pino.warn('Invalid user IP address: ' + user_ip);
       user_ip = undefined;
     } else {
       // anonymize IP address
